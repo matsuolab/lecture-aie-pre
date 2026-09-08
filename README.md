@@ -1,14 +1,11 @@
-# AIE-PRE2026 共通演習テンプレート
+# AIEプレ講座 学習記録
 
-状態: 制作中・個人作業用
+- [preDay 1の記録](records/pre_day1.md)
+- [次に取り組む課題](tasks.md)
+- [演習の案内](docs/DAY1-GUIDED.md)
+- [困ったときの確認](docs/TROUBLESHOOTING.md)
 
-Day 1〜3を通じて一つのリポジトリを使うための制作用の土台です。
-受講者向けの配布版・操作ガイドは準備中です。
+## 続きの記録
 
-## ファイル
-
-- [Day 1の記録](records/day1.md)
 - [Day 2の記録](records/day2.md)
 - [Day 3の記録](records/day3.md)
-- [共通の課題](tasks.md)
-- [制作メモ](MAINTAINERS.md)
