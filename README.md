@@ -1,5 +1,7 @@
 # AIEプレ講座 学習記録
 
+> 制作・収録準備中。配布設定と通し動作の確認は未完了です。
+
 - [preDay 1の記録](records/pre_day1.md)
 - [次に取り組む課題](tasks.md)
 - [演習の案内](docs/DAY1-GUIDED.md)
