@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-const API_URL = "http://localhost:8000/app/api";
+// nginxが/app/apiをbackendコンテナへリバースプロキシするので、
+// フロントは自分がアクセスされているオリジンへの相対パスでリクエストすればよい
+// (localhostをハードコードするとCodespaceなど別ホストからのアクセスで届かなくなる)
+const API_URL = "/app/api";
 
 export function App() {
   const [inputText, setInputText] = useState("");

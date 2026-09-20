@@ -16,5 +16,8 @@ FROM nginx:alpine AS runner
 # viteのビルド成果物(dist)のみをnginxの公開ディレクトリに配置
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# /app/apiをbackendコンテナへリバースプロキシする設定
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # 80番ポートで待ち受け(nginxイメージの標準設定)
 EXPOSE 80
