@@ -33,7 +33,7 @@ def api_endpoint(req: MessageRequest):
     else:
         return {
         "status": "success",
-        "reply": f"reserve response from server: {req.input_text}",
+        "reply": f"{req.input_text}は{len(req.input_text)}文字です。",
         }
 
 

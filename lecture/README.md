@@ -2,31 +2,29 @@
 
 
 ## Linuxデモンストレーション
-以下のファイル構成を目指します。
+以下のファイル構成・権限を目指します。
+権限は `ls -la` で表示される記号表記（例: `-rw-------`）で記載しています。
+
 ```ファイル構成
-lecture/
-├── README.md
-├── docker-compose.yml
-├── backend/
-│   ├── Dockerfile
-│   ├── main.py
-|   ├── .env
-|   ├── .env.example 
-│   ├── requirements.txt
-└── frontend/
-    ├── Dockerfile
-    ├── index.html
-    ├── package-lock.json
-    ├── package.json
-    ├── tsconfig.json
-    ├── vite.config.ts
-    ├── dist/
-    │   ├── index.html
-    │   └── assets/
-    │       └── index-A4XX2AKH.js
-    └── src/
-        ├── App.tsx
-        └── main.tsx
+lecture/                                        drwxr-xr-x
+├── README.md                                   -rw-r--r--
+├── docker-compose.yml                          -rw-r--r--
+├── backend/                                     drwxr-xr-x
+│   ├── Dockerfile                              -rw-r--r--
+│   ├── main.py                                 -rw-r--r--
+|   ├── .env                                    -rw-------  ← chmod 600（機密情報のため所有者のみ）
+|   ├── .env.example                            -rw-r--r--  ← 共有用テンプレート
+│   ├── requirements.txt                        -rw-r--r--
+└── frontend/                                    drwxr-xr-x
+    ├── Dockerfile                              -rw-r--r--
+    ├── index.html                              -rw-r--r--
+    ├── package-lock.json                       -rw-r--r--
+    ├── package.json                            -rw-r--r--
+    ├── tsconfig.json                           -rw-r--r--
+    ├── vite.config.ts                          -rw-r--r--
+    └── src/                                     drwxr-xr-x
+        ├── App.tsx                             -rw-r--r--
+        └── main.tsx                            -rw-r--r--
 ```
 
 
