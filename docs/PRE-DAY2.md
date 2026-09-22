@@ -52,6 +52,64 @@
 set -eu
 
 cd "$(dirname "$0")"
+
+if [ "${1:-}" = "setup-actions" ]; then
+  mkdir -p ../.github/workflows
+  cat > ../.github/workflows/update-report.yml <<'WORKFLOW'
+name: Update report
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - pre_day2/template.md
+      - pre_day2/generate.sh
+      - .github/workflows/update-report.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Check required tools
+        run: |
+          command -v sh
+          command -v sed
+          command -v date
+          command -v curl
+
+      - name: Generate the report
+        run: |
+          chmod +x pre_day2/generate.sh
+          ./pre_day2/generate.sh
+
+      - name: Commit the changed report
+        run: |
+          if [ -z "$(git status --porcelain -- pre_day2/report.md)" ]; then
+            echo "report.md に変更はありません。"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pre_day2/report.md
+          git commit -m "chore: update report"
+          git push
+WORKFLOW
+  printf '%s\n' '.github/workflows/update-report.yml を作成しました。'
+  exit 0
+fi
+
+if [ "$#" -ne 0 ]; then
+  printf '%s\n' '使い方: ./generate.sh または ./generate.sh setup-actions' >&2
+  exit 2
+fi
+
 http_status=$(curl --fail --silent --show-error --location --max-time 30 \
   --output /dev/null --write-out '%{http_code}' https://example.com/)
 checked_at=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
