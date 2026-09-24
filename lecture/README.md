@@ -31,8 +31,18 @@ lecture/                                        drwxr-xr-x
 ## Dockerデモンストレーション
 Docker composeを使って開発サーバーを立ち上げられます。
 ```
+cp backend/.env.example backend/.env && chmod 600 backend/.env   # 初回のみ
 docker compose up -d --build
 ```
+
+### 送信すると「通信に失敗しました。」(504) になる場合
+Codespaceでは、古い方式のファイアウォール(iptables-legacy)がコンテナ間の通信を捨ててしまうことがあります。
+Composeのネットワーク(`br-`で始まる名前)同士の通信を許可するため、Codespace起動後に1回だけ次を実行してください。
+```
+sudo iptables-legacy -I FORWARD 1 -i br-+ -o br-+ -j ACCEPT
+```
+- 設定はCodespaceを再起動すると消えます(再起動後にもう一度実行)。
+- 元に戻す場合: `sudo iptables-legacy -D FORWARD -i br-+ -o br-+ -j ACCEPT`
 
 以下が開発用サーバーになっています。
 http://localhost:8080/
