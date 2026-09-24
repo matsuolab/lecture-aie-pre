@@ -1,6 +1,6 @@
 # 次回の準備課題
 
-前回、`pre_day2/template.md`と`pre_day2/generate.sh`を用意しました。今回は、その二つを実際に編集して動かし、「この処理がどこで実行されたか」をレポートに残せるようにします。手元のCodespaceと、GitHub Actionsのrunnerという、二つの違う場所で同じ`generate.sh`を動かし、それぞれが記録した値を見比べます。branchを作ってPull Requestで取り込むところまでは、前回の実習で行った操作をもう一度使うだけで、新しい操作は増えません。所要時間の目安は合計30分です。提出はありません。
+前回、`pre_day2/template.md`と`pre_day2/generate.sh`を用意しました。今回は、その二つを実際に編集して動かし、「この処理がどこで実行されたか」をレポートに残せるようにします。手元のCodespaceと、GitHub Actionsのrunnerという、二つの違う場所で同じ`generate.sh`を動かし、それぞれが記録した値を見比べます。branchを作ってPull Requestで取り込むところまでは、前回の実習で行った操作をもう一度使うだけで、新しい操作は増えません。あわせて、次回使う大きなファイルを先に取り込んでおく準備も行います（10節）。所要時間の目安は合計30分です。提出はありません。
 
 各節の見出しに目安の時間を書いています。合計すると次のとおり30分です。
 
@@ -8,13 +8,15 @@
 | --- | ---: |
 | 1. 今日のCodespaceと対象ファイルを確認する | 2分 |
 | 2. 課題用のbranchを作る | 2分 |
-| 3. template.mdとgenerate.shを編集する | 5分 |
-| 4. 手元で生成して値を控える | 3分 |
-| 5. 変更を記録してPull Requestを作る | 5分 |
-| 6. ActionsとBot commitを確認して値を控える | 5分 |
-| 7. 二つの値を比べる | 3分 |
-| 8. 手元へ結果を取り込む | 3分 |
-| 9. 次回への接続 | 2分 |
+| 3. template.mdを編集する | 2分 |
+| 4. generate.shを編集する | 4分 |
+| 5. 手元で生成して値を控える | 2分 |
+| 6. 変更を記録してPull Requestを作る | 5分 |
+| 7. ActionsとBot commitを確認して値を控える | 3分 |
+| 8. 二つの値を比べる | 2分 |
+| 9. 手元へ結果を取り込む | 2分 |
+| 10. 次回の準備を実行しておく | 5分 |
+| 11. 次回への接続 | 1分 |
 | 合計 | 30分 |
 
 ## 1. 今日のCodespaceと対象ファイルを確認する（目安2分）
@@ -31,11 +33,7 @@ pwd
 ls pre_day2
 ```
 
-`template.md`と`generate.sh`が表示されれば確認は完了です。今回この二つへ追加する三行は、このページの3節にそのまま載せてあります。編集するときは、3節の枠から写してください。
-
-### うまくいかないとき
-
-`pwd`の結果がRepositoryの先頭でない場合は、今日の実習で使った`cd`で先頭へ戻ってください。`ls pre_day2`に`generate.sh`が表示されない場合は、前回の準備課題どおりに`pre_day2/generate.sh`ができているかを見直してください。
+`template.md`と`generate.sh`が表示されれば確認は完了です。今回この二つへ追加する三行は、このページの3節・4節にそのまま載せてあります。編集するときは、3節・4節の枠から写してください。
 
 ## 2. 課題用のbranchを作る（目安2分）
 
@@ -51,11 +49,7 @@ git status
 git switch -c feature/record-machine-name
 ```
 
-### うまくいかないとき
-
-`git status`に記録されていない変更が表示された場合、先へ進みません。その変更が今回の課題と関係ないものであれば、今日の実習で使った操作でファイルを開き、内容を確認したうえで保存し直すか、変更前の内容に戻してください。同じ名前のbranchが既にあるというメッセージが出た場合は、新しいbranch名を作らず、`git status`の表示を控えて、なぜ既に存在するのかを確認してください。
-
-## 3. template.mdとgenerate.shを編集する（目安5分）
+## 3. template.mdを編集する（目安2分）
 
 対象のフォルダーへ移動します。
 
@@ -63,9 +57,7 @@ git switch -c feature/record-machine-name
 cd pre_day2
 ```
 
-このあと、`template.md`と`generate.sh`をそれぞれ`nano`コマンドで開いて編集します。開き方と保存のしかたは、今日の実習で使ったものと同じです。
-
-### template.mdを編集する
+続けて、`template.md`を`nano`コマンドで開いて編集します。開き方と保存のしかたは、今日の実習で使ったものと同じです。
 
 `template.md`を対象に指定して`nano`コマンドで開き、「確認日時」の行の次へ、次の一行をそのまま追加して保存します。
 
@@ -73,7 +65,9 @@ cd pre_day2
 実行したマシン: {{MACHINE_NAME}}
 ```
 
-### generate.shを編集する
+## 4. generate.shを編集する（目安4分）
+
+`pre_day2`フォルダーにいる状態のまま、`generate.sh`も`nano`コマンドで開いて編集します。
 
 `generate.sh`を対象に指定して`nano`コマンドで開き、`checked_at=`の行の次へ、次の一行をそのまま追加します。
 
@@ -81,19 +75,15 @@ cd pre_day2
 machine_name=$(cat /proc/sys/kernel/hostname)
 ```
 
-続けて、`{{HTTP_STATUS}}`を置き換える`sed`の行の前へ、次の一行をそのまま追加して保存します。行末の`\`（バックスラッシュと呼びます）も含めてください。これは、この行の続きが次の行にあることを示す記号です。消えてしまうと、次の行が別のコマンドとして扱われ、動きません。
+続けて、`{{HTTP_STATUS}}`を置き換える`sed`の行の前へ、次の一行をそのまま追加して保存します。行末の`\`（バックスラッシュと呼びます）も含めてください。これは、この行の続きが次の行にあることを示す記号です。これが消えてしまうと、次の行が別のコマンドとして扱われ、`./generate.sh`を実行したときに何も表示されないまま入力待ちの状態で止まります。
 
 ```
-    -e "s|{{MACHINE_NAME}}|$machine_name|g" \
+        -e "s|{{MACHINE_NAME}}|$machine_name|g" \
 ```
 
 `/proc/sys/kernel/hostname`は、いま動いているマシンが自分の識別名を記録しているファイルの場所です。`cat`でこのファイルの中身を読むと、その識別名が文字として得られます。
 
-### うまくいかないとき
-
-追加した内容を確認したいときは、`cat template.md`と`cat generate.sh`を実行し、この節の三つの枠と見比べてください。三行のどれかを書き間違えた疑いがあるときは、特に行を追加した位置（`確認日時`の行の次、`checked_at=`の行の次、`{{HTTP_STATUS}}`の行の前）と、バックスラッシュの有無を確認してください。
-
-## 4. 手元で生成して値を控える（目安3分）
+## 5. 手元で生成して値を控える（目安2分）
 
 `pre_day2`フォルダーにいる状態で、生成処理を実行します。
 
@@ -104,75 +94,49 @@ cat report.md
 
 ### 観察点
 
-`report.md を生成しました。`と表示され、`cat`の出力の中に「実行したマシン: 」で始まる行があり、コロンの後ろに文字列が入っていれば、手元の生成は成功です。ただし、コロンの後ろが`{{MACHINE_NAME}}`と表示されている場合は、まだ置き換えができていないので成功ではありません。この値を、あとで見比べるためにメモへ控えてください（このメモは自分の手元に残すだけで構いません）。
+`report.md を生成しました。`と表示され、`cat`の出力の中に「実行したマシン: 」で始まる行があり、コロンの後ろに文字列が入っていれば、手元の生成は成功です。成功した場合は、この値を、あとで見比べるためにメモへ控えてください（このメモは自分の手元に残すだけで構いません）。
 
 ### うまくいかないとき
 
-先へ進まず、表示された内容に応じて次を確認してください。
+`./generate.sh`を実行しても何も表示されず、入力待ちの表示が戻ってこない場合は、`Ctrl`キーを押しながら`C`キーを押して中断してください。4節で追加した二つ目の枠の行末に`\`（バックスラッシュ）があるかを確認し、直したら保存してから`./generate.sh`をもう一度実行します。
 
-- `report.md を生成しました。`が表示されず、`No such file or directory`のようなエラーで止まった場合。3節で追加した`machine_name=`の行の、ファイルの場所の書き方を一字ずつ見比べてください。この場合、`report.md`は作り直されていません。
-- 「実行したマシン: 」の後ろが`{{MACHINE_NAME}}`のままの場合。3節の三つ目の枠の行が`generate.sh`に入っているかを`cat generate.sh`で確認してください。行末のバックスラッシュが消えていないかも見てください。
-- 「実行したマシン: 」で始まる行が見当たらない場合。3節の一つ目の枠の行が`template.md`に入っているかを`cat template.md`で確認してください。
-
-直したら、保存してから`./generate.sh`と`cat report.md`をもう一度実行します。
-
-## 5. 変更を記録してPull Requestを作る（目安5分）
-
-対象の三つのファイルを対象に指定して`git diff`コマンドを実行し、変更内容を確認します。
+## 6. 変更を記録してPull Requestを作る（目安5分）
 
 ```sh
-git diff template.md generate.sh report.md
+git status
 ```
 
-`template.md`に表示欄が増え、`generate.sh`に識別名の取得と置き換えが増え、`report.md`に空でない値が入っていることを確認したら、記録します。
+変更されたファイルが`template.md`、`generate.sh`、`report.md`の三つだけであることを確認してから、記録します。
 
 ```sh
 git add template.md generate.sh report.md
-git status --short
-```
-
-表示されたファイル名が、この三つだけであることを確認してからcommitします。
-
-```sh
 git commit -m "実行したマシンを記録"
 git push -u origin feature/record-machine-name
 ```
 
 GitHubで、`feature/record-machine-name`から`master`へのPull Requestを作ります。`Files changed`（画面にこの表記で出ています。変更されたファイルの一覧です）を開き、三つのファイルだけが変更されていることを確認してから取り込みます。
 
-### うまくいかないとき
+## 7. ActionsとBot commitを確認して値を控える（目安3分）
 
-`git status --short`に三つ以外のファイルが表示された場合、commitしません。その表示を保存し、なぜそのファイルが含まれているのかを、そのファイルを開いて確認してください。原因が分かり、対象外のファイルを除いた状態にできるまで、commitを行いません。Pull Requestの`Files changed`に三つ以外のファイルが出ている場合も取り込まず、Codespaceへ戻って同じ確認を行ってください。
+Repositoryの`Actions`を開き、一覧の一番上にある実行（`Update report`という名前です）を開きます。`Generate the report`というstepが緑色で、`report.md を生成しました。`と表示されていることを確認してください。
 
-## 6. ActionsとBot commitを確認して値を控える（目安5分）
-
-Pull Requestを取り込んだときに表示されたcommitの識別子を控えます。Repositoryの`Actions`を開いてください。その識別子、`master`、`push`、`Update report`がそろう実行を開きます。
-
-`Generate the report`というstepが緑色で、`report.md を生成しました。`と表示されていることを確認してください。
-
-続けて、Repositoryの`Commits`を開き、`github-actions[bot]`のcommitの差分を開きます。次を確認してください。
-
-- 変更されたファイルが`report.md`だけであること。
-- `report.md`の中の「実行したマシン: 」の後ろに、`{{MACHINE_NAME}}`のままではない値が入っていること。この値も、あとで見比べるためにメモへ控えてください。
+続けて、Repositoryの`Commits`を開き、`github-actions[bot]`のcommitの差分を開きます。`report.md`の中の「実行したマシン: 」の後ろに値が入っていることを確認し、その値をメモへ控えてください。
 
 ### うまくいかないとき
 
-赤色のstepがある場合、先へ進みません。最初に赤くなったstepを開き、いちばん最初に出ているエラーの行を保存してください。原因を確認する前に、workflowをもう一度動かしたり、別のrunを増やしたりしません。`github-actions[bot]`のcommitに`report.md`以外のファイルが含まれている場合も、その内容を保存し、5節で記録した内容を見直してください。`report.md`の「実行したマシン: 」が`{{MACHINE_NAME}}`のままだった場合は、5節で記録した`generate.sh`の内容（3節の三つ目の枠の行）が入っているかを、Pull Requestの`Files changed`で確認してください。
+赤色のstepがある場合、先へ進みません。最初に赤くなったstepを開き、いちばん最初に出ているエラーの行を控えてください。
 
-## 7. 二つの値を比べる（目安3分）
+多くの場合、原因は3節・4節で追加した行にあります。`cat template.md`と`cat generate.sh`で、追加した行がこのページの枠と同じか、追加した位置が合っているかを見比べてください。直すときは、6節のPull Requestはもう取り込み済みなので、新しいbranchを作ってから直します。9節の`git switch master`と`git pull --ff-only`で手元をそろえたあと、2節と同じ`git switch -c`で新しいbranch（例：`feature/fix-machine-name`）を作ってください。そのbranchで行を直し、5節の`./generate.sh`で手元の生成を確かめてから、6節と同じようにcommit、push、Pull Requestでの取り込みを行います。取り込むと、Actionsがもう一度動きます。
 
-4節で控えた値（Codespace側）と、6節で控えた値（GitHub Actions側）を並べて書き出してください。
+見比べても原因が分からない場合は、控えたエラーの行を手がかりに、公式ドキュメントやAIで調べてください。
 
-この二つは、違っていて正解です。同じ`generate.sh`を、二つの別々のマシンの上で動かしたので、それぞれのマシンが自分の識別名を答えます。手元のCodespaceと、Actionsのrunnerは別のマシンなので、値が違うことは、処理が実際に別の場所で動いたことの証拠になります。
+## 8. 二つの値を比べる（目安2分）
 
-もし二つの値が同じに見えた場合は、新しい操作を試さず、次を確認してください。
+5節で控えた値（Codespace側）と、7節で控えた値（GitHub Actions側）を並べて書き出してください。
 
-- 4節でメモした値が、本当に「今回」の`./generate.sh`実行の結果か（前回までのメモと混ざっていないか）。
-- 6節で開いたBot commitが、今回のPull Requestに対応するものか（別の実行のcommitを開いていないか）。
+この二つは、違っていて正解です。同じ`generate.sh`を、二つの別々のマシンの上で動かしたので、それぞれのマシンが自分の識別名を答えます。もし同じに見えた場合は、5節と7節の値をもう一度控え直してから見比べてください。
 
-この二点を確認したうえで、もう一度4節と6節の`report.md`を見比べてください。
-
-## 8. 手元へ結果を取り込む（目安3分）
+## 9. 手元へ結果を取り込む（目安2分）
 
 Codespaceへ戻り、次を実行します。
 
@@ -186,7 +150,177 @@ git status
 
 ### うまくいかないとき
 
-`git pull --ff-only`が、履歴が分かれている（分岐している）という趣旨のメッセージを出して止まった場合、`--ff-only`を外して続けません。表示されたメッセージと`git status`の結果を保存し、その状態から原因を確認してください。
+`git pull --ff-only`が受け取らずに止まった場合は、表示されたメッセージを控えてください。`--ff-only`は、手元の履歴にGitHub側と食い違う変更があると、混ぜずに止まる指定です。`git status`で記録されていない変更がないかを確かめ、控えたメッセージを手がかりに、公式ドキュメントやAIで調べてください。
+
+## 10. 次回の準備を実行しておく（目安5分）
+
+次回使う大きなファイルを、今のうちに取り込んでおきます。
+
+ファイル一覧で、新しいファイル`pre_day3/prepare.sh`を作ります。作り方は、前回の準備課題で使ったものと同じです（ファイル一覧の一番上にある、自分のRepository名の行を右クリック→`New File...`→`pre_day3/prepare.sh`と入力してEnter）。
+
+下の枠の中身だけをコピーして貼り付け、保存します。
+
+```sh
+#!/bin/sh
+
+# このファイルは、Day3（Docker演習パート）の準備用プログラムです。
+# 講義の前に一度実行しておくことで、講義中に待たずに済むようにします。
+# 保存場所は Repository の中の pre_day3/prepare.sh、実行は
+#   chmod +x pre_day3/prepare.sh
+#   ./pre_day3/prepare.sh
+# の2つだけです（Day2で覚えた操作と同じです）。
+
+# 途中でエラーが起きたら、その時点で止めます（-e）。
+# 中身が決まっていない値を使おうとしたときも止めます（-u）。
+set -eu
+
+# [1] 取得するimageとモデルの版を、変数にまとめておきます。
+#     ここは受講者が書き換える場所ではありません。
+IMAGE='ghcr.io/ggml-org/llama.cpp:server-v0.5.0'
+MODEL_DIR='/workspaces/models'
+MODEL_FILE='gemma-4-E2B-it-UD-Q4_K_XL.gguf'
+MODEL_URL='https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/0314792d7f1f7e229411f620751375812bb9faf2/gemma-4-E2B-it-UD-Q4_K_XL.gguf'
+MODEL_SHA256='b52f438017efaec5debf1c0d8be690571e212a07c312f1102bbce927258cfc32'
+LLM_CHAT_DIR='/workspaces/llm-chat'
+# 空き容量の目安：取得量は約3.5GB。余裕を見て4GB（4×1024×1024 KB）を基準にします。
+REQUIRED_FREE_KB=4194304
+
+# [2] Dockerのserverにつながるか確認します。
+#     つながらなければ、ここで止めて次の行動を伝えます。
+check_docker() {
+  if ! docker version >/dev/null 2>&1; then
+    printf '%s\n' 'エラー：Dockerが使えません。' >&2
+    printf '%s\n' 'このCodespaceでDockerの起動が終わっていないか、Dockerが使えない環境です。' >&2
+    printf '%s\n' '数十秒待ってからもう一度 ./pre_day3/prepare.sh を実行してください。' >&2
+    exit 1
+  fi
+}
+
+# [3] /workspaces の空き容量を確認します。
+#     足りなければ、ここで止めて次の行動を伝えます。
+check_disk_space() {
+  free_kb=$(df -Pk "$MODEL_DIR_PARENT" | awk 'NR==2 {print $4}')
+  if [ "$free_kb" -lt "$REQUIRED_FREE_KB" ]; then
+    printf '%s\n' 'エラー：/workspaces の空き容量が足りません。' >&2
+    printf '%s\n' '約4GB以上の空きが必要です（image約308MB、モデル約3.2GB）。' >&2
+    printf '%s\n' '使っていないCodespaceを削除するか、不要なファイルを消してから、' >&2
+    printf '%s\n' 'もう一度 ./pre_day3/prepare.sh を実行してください。' >&2
+    exit 1
+  fi
+}
+
+# [4] llama.cppのimageを取得します。すでに取得済みなら取り直しません。
+pull_image() {
+  if docker image inspect "$IMAGE" >/dev/null 2>&1; then
+    printf '%s\n' "imageは取得済みです（$IMAGE）。取得をとばします。"
+    return 0
+  fi
+  printf '%s\n' "imageを取得します（$IMAGE）。数分かかることがあります。"
+  if ! docker pull "$IMAGE"; then
+    printf '%s\n' 'エラー：imageの取得に失敗しました。' >&2
+    printf '%s\n' 'ネットワークの状態を確認し、もう一度 ./pre_day3/prepare.sh を実行してください。' >&2
+    exit 1
+  fi
+}
+
+# [5] ファイルのSHA-256が期待どおりか確認します。一致すれば0、しなければ1を返します。
+matches_sha256() {
+  target_file="$1"
+  [ -f "$target_file" ] || return 1
+  actual=$(sha256sum "$target_file" | awk '{print $1}')
+  [ "$actual" = "$MODEL_SHA256" ]
+}
+
+# [6] モデルファイルを取得します。
+#     一致済みなら取り直さず、途中で止まったファイルは消して取り直します。
+fetch_model() {
+  mkdir -p "$MODEL_DIR"
+  model_path="$MODEL_DIR/$MODEL_FILE"
+  tmp_path="$model_path.download"
+
+  if matches_sha256 "$model_path"; then
+    printf '%s\n' "モデルは取得済みで内容も一致しています（$model_path）。取得をとばします。"
+    return 0
+  fi
+
+  # 前回途中で止まったファイルが残っていたら消します。
+  rm -f "$tmp_path"
+
+  printf '%s\n' 'モデルを取得します。1分程度かかることがあります。'
+  if ! curl --fail --silent --show-error --location --output "$tmp_path" "$MODEL_URL"; then
+    rm -f "$tmp_path"
+    printf '%s\n' 'エラー：モデルの取得に失敗しました。' >&2
+    printf '%s\n' 'ネットワークの状態を確認し、もう一度 ./pre_day3/prepare.sh を実行してください。' >&2
+    exit 1
+  fi
+
+  if ! matches_sha256 "$tmp_path"; then
+    rm -f "$tmp_path"
+    printf '%s\n' 'エラー：取得したモデルの内容が正しくありません（SHA-256が一致しません）。' >&2
+    printf '%s\n' '途中で通信が切れた可能性があります。もう一度 ./pre_day3/prepare.sh を実行してください。' >&2
+    exit 1
+  fi
+
+  mv "$tmp_path" "$model_path"
+  printf '%s\n' 'モデルの取得と内容の確認が終わりました。'
+}
+
+# [7] AI用のDockerfileを /workspaces/llm-chat/Dockerfile に配置します。
+#     中身はこのプログラムの中に持っています（配布ページのDockerfileと同じ内容です）。
+place_llm_chat_dockerfile() {
+  mkdir -p "$LLM_CHAT_DIR"
+  cat > "$LLM_CHAT_DIR/Dockerfile" <<'DOCKERFILE'
+# [1] 土台（base image）：llama.cpp のサーバーが入ったimage。
+#     版（server-v0.5.0）を固定する。latestを使うと、作り直すたびに中身が変わりうる。
+FROM ghcr.io/ggml-org/llama.cpp:server-v0.5.0
+
+# [2] 設定（environment variable）：読み込むモデルの場所。
+#     モデルのファイルはimageに入れず、docker run の -v（bind mount）で外から /models に渡す。
+ENV LLAMA_ARG_MODEL=/models/gemma-4-E2B-it-UD-Q4_K_XL.gguf
+
+# [3] 設定：受付の窓口（port）。containerの外からつなげるよう 0.0.0.0 の 8080 番で待つ。
+ENV LLAMA_ARG_HOST=0.0.0.0
+ENV LLAMA_ARG_PORT=8080
+
+# [4] 設定：考える動作（reasoning）を切る。会話を覚えておける長さ（ctx-size）。
+#     一度に答える長さの上限（n-predict）。
+ENV LLAMA_ARG_REASONING=off
+ENV LLAMA_ARG_CTX_SIZE=4096
+ENV LLAMA_ARG_N_PREDICT=256
+
+# [5] 設定：AIへの最初の指示（system prompt）。ここを書き換えて docker build をやり直すと、
+#     AIの答え方が変わる。書き換えるのはこの行の "" の中の文だけでよい。
+#     引用符の入れ子（外側は'、内側は"）を崩さないこと。
+ENV LLAMA_ARG_UI_CONFIG='{"systemMessage":"あなたは親切なアシスタントです。短く答えてください。"}'
+DOCKERFILE
+  printf '%s\n' "$LLM_CHAT_DIR/Dockerfile を配置しました。"
+}
+
+# ここから実行順です（[2]〜[7]の関数を、この順で呼び出します）。
+MODEL_DIR_PARENT=$(dirname "$MODEL_DIR")
+check_docker
+check_disk_space
+pull_image
+fetch_model
+place_llm_chat_dockerfile
+
+printf '%s\n' '準備ができました'
+```
+
+保存したら、ターミナルで次を実行します。
+
+```sh
+chmod +x pre_day3/prepare.sh
+./pre_day3/prepare.sh
+```
+
+### 観察点
+
+数分かかることがあります。終わると`準備ができました`と表示されます。これが完了の目印です。今回、`pre_day3/`はcommitしません（あとで`git status`に記録されていないファイルとして表示されたままで構いません）。
+
+### うまくいかないとき
+
+エラーの表示が出た場合は、その表示に書かれている次の行動（数十秒待つ、容量を空ける、もう一度実行するなど）に従ってください。
 
 ## できた状態
 
@@ -197,7 +331,8 @@ git status
 - GitHub側の`report.md`の「実行したマシン」が`{{MACHINE_NAME}}`のままではない値になっていて、その値を控えてある。
 - 控えた二つの値を並べ、違っていることを確認し、「同じ処理を別のマシンで動かしたから」と自分の言葉で言える。
 - Codespaceの`master`へ結果を取り込み、`git status`で記録されていない変更がない。
+- `./pre_day3/prepare.sh`を実行し、`準備ができました`の表示を見た。
 
-## 次回への接続（目安2分）
+## 11. 次回への接続（目安1分）
 
-次回は、同じ`generate.sh`をDockerというしくみの中で動かします。中身の詳しい説明は次回に行います。今回追加した「実行したマシン」の値は、次回も同じように、処理がどこで動いたかを見分ける手がかりとして使います。次回動かした結果も、今回と同じように値を控えておくと、見比べる材料が増えます。
+次回は、今回記録した「実行したマシン」のしくみを、Dockerというしくみの中で動かします。今回のうちに10節の準備を済ませておいたので、次回はその状態からすぐに始められます。中身の詳しい説明は次回に行います。
