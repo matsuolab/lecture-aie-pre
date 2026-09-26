@@ -2,8 +2,6 @@
 
 - [preDay 1の記録](records/pre_day1.md)
 - [次に取り組む課題](tasks.md)
-- [演習の案内](docs/DAY1-GUIDED.md)
-- [困ったときの確認](docs/TROUBLESHOOTING.md)
 
 ## 続きの記録
 
