@@ -34,3 +34,10 @@
 - 演習動画のS42〜S44では、このRepositoryの履歴をGitHubの画面で開き、「記録ページのリンク先を整理」と、その直後の「リンク先を実際のファイル名に戻す」の二つの記録を差分で読む。
 - 前者はREADMEのリンク先だけを`records/preday1.md`へ変え、ファイル名は変えていないためリンクが切れる。後者で元に戻している。この二つは教材として意図的に残した履歴であり、削除や履歴の書き換え（rebase・squash）をしない。
 - 受講者がTemplateから作るRepositoryにはこの履歴は含まれない。受講者は公開されているこのRepositoryの`Commits`と`README.md`の`History`から同じ記録を開く。
+
+## Day 3の準備スクリプト（2026-09-26）
+
+- `pre_day3/prepare.sh`は、受講者が`Use this template`で作るRepositoryに最初から入るよう、開講前に配置した。実行権限（100755）付きで記録している。
+- Templateから作ったRepositoryには、あとから加えた変更は届かない。中身を直す場合は、すでに作られた受講者のRepositoryへ反映されないことを前提に、`docs/PRE-DAY3.md`で案内する。
+- 正本はこのファイルとする。
+- `*.sh`は`.gitattributes`で改行をLFに固定している。CRLFになると`sh`で実行できない。
