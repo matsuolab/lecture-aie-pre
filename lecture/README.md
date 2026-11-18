@@ -31,7 +31,7 @@ lecture/                                        drwxr-xr-x
 ## Dockerデモンストレーション
 Docker composeを使って開発サーバーを立ち上げられます。
 ```
-cp backend/.env.example backend/.env && chmod 600 backend/.env   # 初回のみ
+cp backend/.env.example backend/.env && chmod 600 backend/.env  # 初回のみ
 docker compose up -d --build
 ```
 
